@@ -1,0 +1,18 @@
+{% extends 'blog/index.html' %}
+{% block title %}Login Page{% endblock title %}
+
+{% block nav %}
+{% endblock nav %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+  {% endif %}
+  <form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Login" \>
+  </form>
+{% endblock content %}
