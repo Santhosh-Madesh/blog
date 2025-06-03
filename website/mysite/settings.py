@@ -117,6 +117,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_URL = "media/"
+
+import os
+
+MEDIA_ROOT = os.path.join(BASE_DIR,"blog/media")
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
