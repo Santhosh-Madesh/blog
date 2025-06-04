@@ -4,6 +4,8 @@ from . import views, auth
 urlpatterns=[
     path("",views.home,name="home"),
     path("blog_creation/",views.blog_creation,name="blog_creation"),
+    path("my_blogs/",views.my_blogs,name="my_blogs"),
+    path("delete_blog/<int:pk>",views.delete,name="delete"),
     path("signup/",auth.signup,name="signup"),
     path("login/",auth.login_page,name="login"),
     path("logout/",auth.logout_page,name="logout"),
