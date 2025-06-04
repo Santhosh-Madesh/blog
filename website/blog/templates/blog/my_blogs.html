@@ -1,0 +1,16 @@
+{% extends 'blog/index.html' %}
+{% block title %}My Blogs{% endblock title %}
+
+{% block content %}<br>
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}
+
+  {% if context %}
+    {% for data in context %}
+      <p class="title">{{data.title}}  <a href="">view</a> <a href="">update</a> <a href="{% url 'delete' data.pk %}">delete</a></p>
+    {% endfor %}
+  {% endif %}
+{% endblock content %}
