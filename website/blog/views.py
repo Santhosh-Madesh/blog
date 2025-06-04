@@ -38,3 +38,24 @@ def blog_creation(request):
             
     form = PostModelForm()
     return render(request,"blog/blog_creation.html",{"form":form})
+
+@login_required
+def my_blogs(request):
+    user = request.user
+    posts = Posts.objects.filter(user=user)
+    context = []
+    for data in posts:
+        context.append(
+            {
+                "pk":data.id,
+                "title":data.title,
+            }
+            )
+    return render(request,"blog/my_blogs.html",{"context":context})
+
+@login_required
+def delete(request,pk):
+    post = Posts.objects.get(id=pk)
+    post.delete()
+    messages.success(request,"Post deleted successfully!")
+    return redirect("my_blogs")
