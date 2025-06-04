@@ -5,12 +5,20 @@ from django.contrib.auth.models import User
 class ProfileModelForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields=["pfp","name","age","instagram_id","bio"]
+        exclude=['user']
+        widgets={
+            'bio':forms.Textarea(),
+        }
 
 class PostModelForm(forms.ModelForm):
     class Meta:
         model = Posts
-        fields = ["date","title","introduction","content","conclusion"]
+        exclude=["user","date"]
+        widgets={
+            'introduction':forms.Textarea(),
+            'content':forms.Textarea(),
+            'conclusion':forms.Textarea(),
+        }
 
 class SignUpForm(forms.Form):
     first_name = forms.CharField()
