@@ -1,0 +1,17 @@
+{% extends 'blog/index.html' %}
+{% block title %}Blog Creation{% endblock title %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+  {% endif %}
+
+  <form action="{% url 'blog_creation' %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Create Blog" \>
+  </form>
+
+{% endblock content %}
