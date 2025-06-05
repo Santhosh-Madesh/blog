@@ -1,0 +1,28 @@
+{% extends 'blog/index.html' %}
+{% block title %}Dashboard{% endblock title %}
+
+{% block content %}
+  {% if messages %}<br>
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}
+  {% if form %}
+  <br>
+    <form action="{% url 'dashboard' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Update Dashboard">
+    </form>
+  {% else %}
+  <br>
+    {% for data in context %}
+      <img src="{{data.pfp.url}}" alt="Profile pic"/>
+      <h3>{{data.name}}</h3>
+
+      <p>Age: {{data.age}}</p>
+      <p>{{data.instagram_id}}</p>
+      <p>{{data.bio}}</p>
+    {% endfor %}
+  {% endif %}
+{% endblock content %}
