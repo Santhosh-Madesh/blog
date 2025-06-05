@@ -102,3 +102,34 @@ def dashboard(request):
     else:
         form = ProfileModelForm()
         return render(request,"blog/dashboard.html",{"form":form})
+    
+@login_required
+def update_dashboard(request):
+    if request.method == "POST":
+        form = ProfileModelForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = Profile.objects.get(user=request.user)
+            profile.pfp = request.FILES["pfp"]
+            profile.name = form.cleaned_data["name"]
+            profile.age = form.cleaned_data["age"]
+            profile.instagram_id = form.cleaned_data["instagram_id"]
+            profile.bio = form.cleaned_data["bio"]
+            profile.save()
+            messages.success(request,"Dashboard updated successfully!")
+            return redirect("dashboard")
+    profile = Profile.objects.filter(user=request.user)
+    if profile:
+        for data in profile:
+            form = ProfileModelForm(
+                initial={
+                    "pfp":data.pfp,
+                    "name":data.name,
+                    "age":data.age,
+                    "instagram_id":data.instagram_id,
+                    "bio":data.bio,
+                }
+            )
+        return render(request,"blog/update_dashboard.html",{"form":form})
+    else:
+        messages.error(request,"You do not have a dashboard to update, Create one.")
+        return redirect("dashboard")
