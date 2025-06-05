@@ -10,6 +10,7 @@ urlpatterns=[
     path("update_blog/<int:pk>",views.update_blog,name="blog_update"),
     path("dashboard/",views.dashboard,name="dashboard"),
     path("dashboard_update/",views.update_dashboard,name="dashboard_update"),
+    path("search/",views.search,name="search"),
     path("signup/",auth.signup,name="signup"),
     path("login/",auth.login_page,name="login"),
     path("logout/",auth.logout_page,name="logout"),
