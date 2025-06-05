@@ -18,6 +18,13 @@
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'logout' %}">Logout</a>
     </nav>
+    <br>
+    <form action="{% url 'search' %}" method="get">
+      {% csrf_token %}
+      <input type="search" name="search">
+      <input type="submit" value="search user">
+    </form>
+    <br>
     {% endblock nav %}
     {% block content %}
     {% if messages %}
