@@ -1,0 +1,18 @@
+{% extends 'blog/index.html' %}
+{% block title %}Dashboard updation{% endblock title %}
+
+{% block content %}
+
+  {% if messages %}<br>
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}<br>
+
+  <form action="{% url 'dashboard_update' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="update dashboard">
+  </form>
+
+{% endblock content %}
