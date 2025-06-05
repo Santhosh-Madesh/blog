@@ -5,7 +5,7 @@ from datetime import date
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,)
-    pfp = models.ImageField(default="default.jpg",null=True,blank=True)
+    pfp = models.ImageField(upload_to="media/",default="media/default.jpg",null=True,blank=True)
     name = models.CharField()
     age = models.IntegerField()
     instagram_id = models.CharField()
