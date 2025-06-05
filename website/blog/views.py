@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import PostModelForm
+from .forms import PostModelForm, ProfileModelForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Posts
+from .models import Posts, Profile
 from django.core.paginator import Paginator
 
 @login_required
@@ -85,3 +85,20 @@ def update_blog(request,pk):
     form = PostModelForm(initial={"title":post.title,"introduction":post.introduction,"content":post.content,"conclusion":post.conclusion})
     return render(request,"blog/blog_update.html",{"form":form,"pk":pk})
     
+@login_required
+def dashboard(request):
+    if request.method == "POST":
+        form = ProfileModelForm(request.POST,request.FILES)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
+            messages.success(request,"Dashboard has been updated successfully!")
+            return redirect("dashboard")
+    user = request.user
+    profile = Profile.objects.filter(user=user)
+    if profile:
+        return render(request,"blog/dashboard.html",{"context":profile})
+    else:
+        form = ProfileModelForm()
+        return render(request,"blog/dashboard.html",{"form":form})
