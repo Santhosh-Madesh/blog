@@ -4,22 +4,16 @@ from .forms import PostModelForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Posts
+from django.core.paginator import Paginator
 
 @login_required
 def home(request):
-    posts = Posts.objects.all()
-    context = []
-    for data in posts:
-        context.append(
-            {
-            "date":data.date,
-            "title":data.title,
-            "introduction":data.introduction,
-            "content":data.content,
-            "conclusion":data.conclusion,
-            }
-        )
-    return render(request,"blog/index.html",{"context":context})
+    posts = Posts.objects.all().order_by("date")
+    page = Paginator(posts,2)
+
+    page_number = request.GET.get("page")
+    page_obj = page.get_page(page_number)
+    return render(request,"blog/index.html",{"page_obj":page_obj})
 
 
 @login_required
@@ -59,3 +53,35 @@ def delete(request,pk):
     post.delete()
     messages.success(request,"Post deleted successfully!")
     return redirect("my_blogs")
+
+@login_required
+def view_blog(request,pk):
+    post = Posts.objects.get(id=pk)
+    context = {
+        "title":post.title,
+        "date":post.date,
+        "introduction":post.introduction,
+        "content":post.content,
+        "conclusion":post.conclusion,
+    }
+    return render(request,"blog/view_blog.html",context)
+
+@login_required
+def update_blog(request,pk):
+    if request.method == "POST":
+        form = PostModelForm(request.POST)
+        if form.is_valid():
+            post = Posts.objects.get(id=pk)
+            post.title = form.cleaned_data["title"]
+            post.introduction = form.cleaned_data["introduction"]
+            post.content = form.cleaned_data["content"]
+            post.conclusion = form.cleaned_data["conclusion"]
+            post.save()
+            
+            messages.success(request,"Blog updated successfully!")
+            return redirect("my_blogs")
+        
+    post = Posts.objects.get(id = pk)
+    form = PostModelForm(initial={"title":post.title,"introduction":post.introduction,"content":post.content,"conclusion":post.conclusion})
+    return render(request,"blog/blog_update.html",{"form":form,"pk":pk})
+    
