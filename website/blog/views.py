@@ -133,3 +133,19 @@ def update_dashboard(request):
     else:
         messages.error(request,"You do not have a dashboard to update, Create one.")
         return redirect("dashboard")
+    
+@login_required
+def search(request):
+    search_data = request.GET["search"]
+    try:
+        user = User.objects.get(username = search_data)
+    except User.DoesNotExist:
+        messages.error(request,"No such user exists!")
+        return redirect("home")
+    
+    profile = Profile.objects.filter(user=user)
+    if profile:
+        return render(request,"blog/user_search.html",{"context":profile})
+    else:
+        return render(request,"blog/user_search.html",{"user":user})
+    
