@@ -1,0 +1,17 @@
+{% extends 'blog/index.html' %}
+{% block title %}View Blog{% endblock title %}
+
+{% block content %}<br>
+  {% if messages %}
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}
+
+  <p class="date">{{date}}</p>
+  <h2 class="title">{{title}}</h2> 
+  <br>
+  <p class="introduction">{{introduction}}</p>
+  <p class="content">{{content}}</p>
+  <p class="conclusion">{{conclusion}}</p>
+{% endblock content %}
