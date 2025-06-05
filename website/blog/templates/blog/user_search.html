@@ -1,0 +1,22 @@
+{% extends 'blog/index.html' %}
+{% block title %}User Search{% endblock title %}
+
+{% block content %}
+  {% if messages %}<br>
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}
+  {% if context %}
+    {% for data in context %}
+      <img src="{{data.pfp.url}}" alt="Profile pic">
+      <h4>{{data.name}}</h4>
+      <p>Age: {{data.age}} Instagram id: {{data.instagram_id}}</p>
+      <p>{{data.bio}}</p>
+    {% endfor %}
+  {% else %}
+      <h4>{{user.username}}</h4>
+      <p>{{user.email}}</p>
+      <p>That is all the data available. The user {{data.username}} hasn't created their profile yet.</p>
+  {% endif %}
+{% endblock content %}
