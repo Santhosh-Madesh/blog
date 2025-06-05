@@ -1,0 +1,17 @@
+{% extends 'blog/index.html' %}
+{% block title %}Blog Updation{% endblock title %}
+
+{% block content %}
+  {% if messages %}<br>
+    {% for message in messages %}
+      {{message}}<br>
+    {% endfor %}
+  {% endif %}
+
+  <form action="{% url 'blog_update' pk %}" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" value="Update Blog"> 
+  </form>
+
+{% endblock content %}
