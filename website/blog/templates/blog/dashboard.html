@@ -15,6 +15,7 @@
         <input type="submit" value="Update Dashboard">
     </form>
   {% else %}
+  
   <br>
     {% for data in context %}
       <img src="{{data.pfp.url}}" alt="Profile pic"/>
@@ -24,5 +25,6 @@
       <p>{{data.instagram_id}}</p>
       <p>{{data.bio}}</p>
     {% endfor %}
+  <a href="{% url 'dashboard_update' %}">update dashboard</a>
   {% endif %}
 {% endblock content %}
