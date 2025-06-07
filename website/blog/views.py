@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .forms import PostModelForm, ProfileModelForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from .models import Posts, Profile
 from django.core.paginator import Paginator
+from django.views import View
+from django.views.generic import ListView
 
 @login_required
 def home(request):
@@ -14,6 +17,19 @@ def home(request):
     page_number = request.GET.get("page")
     page_obj = page.get_page(page_number)
     return render(request,"blog/index.html",{"page_obj":page_obj})
+
+@method_decorator(login_required,name="dispatch")
+class IndexView(ListView):
+    model = Posts
+    context_object_name = "blog_posts"
+    template_name = "blog/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["profiles"] = Profile.objects.all()
+
+        return context 
 
 
 @login_required

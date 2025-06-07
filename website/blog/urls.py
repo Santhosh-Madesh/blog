@@ -1,8 +1,9 @@
 from django.urls import path
 from . import views, auth
+from .views import IndexView
 
 urlpatterns=[
-    path("",views.home,name="home"),
+    path("",IndexView.as_view(),name="home"),
     path("blog_creation/",views.blog_creation,name="blog_creation"),
     path("my_blogs/",views.my_blogs,name="my_blogs"),
     path("delete_blog/<int:pk>",views.delete,name="delete"),

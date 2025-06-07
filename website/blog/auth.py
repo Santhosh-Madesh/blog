@@ -20,7 +20,7 @@ def signup(request):
             return redirect("login")
         else:
             messages.error(request,"Invalid input")
-            return redirect("signup")
+            return render(request,"blog/signup.html",{"form":form})
     form = SignUpForm()
     return render(request,"blog/signup.html",{"form":form})
 
@@ -36,7 +36,7 @@ def login_page(request):
             user = authenticate(username=username,password=password)
             if user is None:
                 messages.error(request,"Invalid credentials!")
-                return redirect("login")
+                return render(request,"blog/login.html",{"form":form})
             else:
                 login(request,user)
                 messages.success(request,"Login successful!")
