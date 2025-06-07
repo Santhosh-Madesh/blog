@@ -48,6 +48,16 @@ def my_blogs(request):
             )
     return render(request,"blog/my_blogs.html",{"context":context})
 
+@method_decorator(login_required,name="dispatch")
+class MyBlogListView(ListView):
+    template_name = "blog/my_blogs.html"
+
+    def get(self, request):
+        user = request.user
+        context = Posts.objects.filter(user = user)
+        return render(request,self.template_name,{"context":context})
+        
+
 @login_required
 def delete(request,pk):
     post = Posts.objects.get(id=pk)
