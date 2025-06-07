@@ -9,27 +9,12 @@ from django.core.paginator import Paginator
 from django.views import View
 from django.views.generic import ListView
 
-@login_required
-def home(request):
-    posts = Posts.objects.all().order_by("date")
-    page = Paginator(posts,2)
 
-    page_number = request.GET.get("page")
-    page_obj = page.get_page(page_number)
-    return render(request,"blog/index.html",{"page_obj":page_obj})
-
-@method_decorator(login_required,name="dispatch")
-class IndexView(ListView):
+@method_decorator(login_required, name="dispatch")
+class IndexListView(ListView):
     model = Posts
-    context_object_name = "blog_posts"
     template_name = "blog/index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["profiles"] = Profile.objects.all()
-
-        return context 
+    context_object_name = "blog_posts"
 
 
 @login_required
