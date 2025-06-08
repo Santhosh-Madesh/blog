@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from .models import Posts, Profile
 from django.core.paginator import Paginator
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 @method_decorator(login_required, name="dispatch")
@@ -34,19 +34,6 @@ def blog_creation(request):
     form = PostModelForm()
     return render(request,"blog/blog_creation.html",{"form":form})
 
-@login_required
-def my_blogs(request):
-    user = request.user
-    posts = Posts.objects.filter(user=user)
-    context = []
-    for data in posts:
-        context.append(
-            {
-                "pk":data.id,
-                "title":data.title,
-            }
-            )
-    return render(request,"blog/my_blogs.html",{"context":context})
 
 @method_decorator(login_required,name="dispatch")
 class MyBlogListView(ListView):
@@ -65,17 +52,16 @@ def delete(request,pk):
     messages.success(request,"Post deleted successfully!")
     return redirect("my_blogs")
 
-@login_required
-def view_blog(request,pk):
-    post = Posts.objects.get(id=pk)
-    context = {
-        "title":post.title,
-        "date":post.date,
-        "introduction":post.introduction,
-        "content":post.content,
-        "conclusion":post.conclusion,
-    }
-    return render(request,"blog/view_blog.html",context)
+
+@method_decorator(login_required, name="dispatch")
+class ViewBlogDetailView(DetailView):
+    model = Posts
+    template_name = "blog/view_blog.html"
+    context_object_name = "post"
+
+    def get_object(self, queryset = None):
+        pk = self.kwargs.get("pk")
+        return Posts.objects.get(id = pk)
 
 @login_required
 def update_blog(request,pk):
