@@ -35,7 +35,6 @@
     <br>
     {% if blog_posts %}
     {% for data in blog_posts %}
-    {% for profile in profiles %}
     <div class="container">
       <p class="date">{{data.date}}</p>
       <h2 class="title">{{data.title}}</h2> 
@@ -43,9 +42,8 @@
       <p class="introduction">{{data.introduction}}</p>
       <p class="content">{{data.content}}</p>
       <p class="conclusion">{{data.conclusion}}</p>
-      <p class="blog-author">{{profile.name}}</p>
+      <p class="blog-author">{{data.user.username}}</p>
     </div><br>
-    {% endfor %}
     {% endfor %}
     {% endif %}
     {% endblock content %}

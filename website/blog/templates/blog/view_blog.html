@@ -8,10 +8,10 @@
     {% endfor %}
   {% endif %}
 
-  <p class="date">{{date}}</p>
-  <h2 class="title">{{title}}</h2> 
+  <p class="date">{{post.date}}</p>
+  <h2 class="title">{{post.title}}</h2> 
   <br>
-  <p class="introduction">{{introduction}}</p>
-  <p class="content">{{content}}</p>
-  <p class="conclusion">{{conclusion}}</p>
+  <p class="introduction">{{post.introduction}}</p>
+  <p class="content">{{post.content}}</p>
+  <p class="conclusion">{{post.conclusion}}</p>
 {% endblock content %}

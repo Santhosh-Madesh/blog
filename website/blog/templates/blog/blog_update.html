@@ -8,7 +8,7 @@
     {% endfor %}
   {% endif %}
 
-  <form action="{% url 'blog_update' pk %}" method="post">
+  <form action="{% url 'blog_update' posts.pk %}" method="post">
     {% csrf_token %}
     {{form}}
     <input type="submit" value="Update Blog"> 

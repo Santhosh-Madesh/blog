@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from .models import Posts, Profile
 from django.core.paginator import Paginator
 from django.views import View
-from django.views.generic import ListView, DetailView, FormView,  DeleteView
+from django.views.generic import ListView, DetailView, FormView, DeleteView ,UpdateView
 from django.urls import reverse_lazy
 
 
@@ -42,13 +42,6 @@ class MyBlogListView(ListView):
         return render(request,self.template_name,{"context":context})
         
 
-@login_required
-def delete(request,pk):
-    post = Posts.objects.get(id=pk)
-    post.delete()
-    messages.success(request,"Post deleted successfully!")
-    return redirect("my_blogs")
-
 @method_decorator(login_required, name="dispatch")
 class DeleteBlogView(DeleteView):
     model = Posts
@@ -66,24 +59,14 @@ class ViewBlogDetailView(DetailView):
         pk = self.kwargs.get("pk")
         return Posts.objects.get(id = pk)
 
-@login_required
-def update_blog(request,pk):
-    if request.method == "POST":
-        form = PostModelForm(request.POST)
-        if form.is_valid():
-            post = Posts.objects.get(id=pk)
-            post.title = form.cleaned_data["title"]
-            post.introduction = form.cleaned_data["introduction"]
-            post.content = form.cleaned_data["content"]
-            post.conclusion = form.cleaned_data["conclusion"]
-            post.save()
-            
-            messages.success(request,"Blog updated successfully!")
-            return redirect("my_blogs")
-        
-    post = Posts.objects.get(id = pk)
-    form = PostModelForm(initial={"title":post.title,"introduction":post.introduction,"content":post.content,"conclusion":post.conclusion})
-    return render(request,"blog/blog_update.html",{"form":form,"pk":pk})
+
+@method_decorator(login_required, name="dispatch")
+class UpdateBlogView(UpdateView):
+    model = Posts
+    form_class = PostModelForm
+    template_name = "blog/blog_update.html"
+    success_url = reverse_lazy("my_blogs")
+
     
 @login_required
 def dashboard(request):
