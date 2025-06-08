@@ -1,13 +1,13 @@
 from django.urls import path
 from . import views, auth
-from .views import IndexView
+from .views import IndexListView, MyBlogListView, ViewBlogDetailView, BlogCreationFormView
 
 urlpatterns=[
-    path("",IndexView.as_view(),name="home"),
-    path("blog_creation/",views.blog_creation,name="blog_creation"),
-    path("my_blogs/",views.my_blogs,name="my_blogs"),
+    path("",IndexListView.as_view(),name="home"),
+    path("blog_creation/",BlogCreationFormView.as_view(),name="blog_creation"),
+    path("my_blogs/",MyBlogListView.as_view(),name="my_blogs"),
     path("delete_blog/<int:pk>",views.delete,name="delete"),
-    path("view_blog/<int:pk>",views.view_blog,name="view_blog"),
+    path("view_blog/<int:pk>",ViewBlogDetailView.as_view(),name="view_blog"),
     path("update_blog/<int:pk>",views.update_blog,name="blog_update"),
     path("dashboard/",views.dashboard,name="dashboard"),
     path("dashboard_update/",views.update_dashboard,name="dashboard_update"),
