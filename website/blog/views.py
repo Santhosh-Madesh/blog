@@ -7,7 +7,8 @@ from django.contrib.auth.models import User
 from .models import Posts, Profile
 from django.core.paginator import Paginator
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, FormView
+from django.urls import reverse_lazy
 
 
 @method_decorator(login_required, name="dispatch")
@@ -17,22 +18,19 @@ class IndexListView(ListView):
     context_object_name = "blog_posts"
 
 
-@login_required
-def blog_creation(request):
-    if request.method == "POST":
-        form = PostModelForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.user = request.user
-            instance.save()
-            messages.success(request,"New Blog has been created Successfully")
-            return redirect("home")
-        else:
-            messages.error(request,"Invalid blog creation. Try Again!")
-            return redirect("blog_creation")
-            
-    form = PostModelForm()
-    return render(request,"blog/blog_creation.html",{"form":form})
+@method_decorator(login_required, name="dispatch")
+class BlogCreationFormView(FormView):
+    template_name = "blog/blog_creation.html"
+    form_class = PostModelForm
+    success_url = reverse_lazy("home")
+
+    def form_valid(self, form):
+        
+        instance = form.save(commit = False)
+        instance.user = self.request.user
+        form = instance.save()
+
+        return super().form_valid(form)
 
 
 @method_decorator(login_required,name="dispatch")
