@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views, auth
 from .views import IndexListView, MyBlogListView, ViewBlogDetailView, BlogCreationFormView, DeleteBlogView, UpdateBlogView
+from .auth import LoginPageView
 
 urlpatterns=[
     path("",IndexListView.as_view(),name="home"),
@@ -13,6 +14,6 @@ urlpatterns=[
     path("dashboard_update/",views.update_dashboard,name="dashboard_update"),
     path("search/",views.search,name="search"),
     path("signup/",auth.signup,name="signup"),
-    path("login/",auth.login_page,name="login"),
+    path("login/",LoginPageView.as_view(),name="login"),
     path("logout/",auth.logout_page,name="logout"),
 ]
