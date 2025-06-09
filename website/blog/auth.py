@@ -3,6 +3,8 @@ from .forms import SignUpForm,LoginForm
 from django.contrib.auth import login,logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
 def signup(request):
     if request.method == "POST":
@@ -43,6 +45,19 @@ def login_page(request):
                 return redirect("home")
     form = LoginForm()
     return render(request,"blog/login.html",{"form":form})
+
+class LoginPageView(LoginView):
+    redirect_authenticated_user = True
+    template_name = "blog/login.html"
+
+    def get_success_url(self):
+        messages.success(self.request, "Login Successful!")
+        return reverse_lazy("home")
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid login credentials")
+        return super().form_invalid(form)
+    
 
 def logout_page(request):
     if request.user.is_authenticated:
