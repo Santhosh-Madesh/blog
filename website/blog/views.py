@@ -16,7 +16,7 @@ class IndexListView(ListView):
     model = Posts
     template_name = "blog/index.html"
     context_object_name = "blog_posts"
-
+    paginate_by = 10
 
 @method_decorator(login_required, name="dispatch")
 class BlogCreationFormView(FormView):
